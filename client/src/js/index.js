@@ -12,7 +12,7 @@ import { fetchCards } from "./cards";
 
 import {initdb,getDb,postDb, deleteDb, editDb} from './database';
 import { toggleForm, clearForm } from "./form";
-
+const installBtn = document.getElementById('installBtn');
 
 window.addEventListener('load',function(){
     initdb();
@@ -99,3 +99,18 @@ window.addEventListener('load',function(){
     window.addEventListener('load', () => {
     navigator.serviceWorker.register('./service-worker.js');
   })};
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installBtn.style.visibility = 'visible';
+
+    installBtn.addEventListener('click', () => {
+      event.prompt();
+      installBtn.setAttribute('disabled', true);
+      installBtn.textContent = 'Installed!';
+      });
+    });
+
+    window.addEventListener('appinstalled', (event) => {
+      console.log('👍', 'appinstalled', event);
+    });
